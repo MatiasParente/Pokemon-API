@@ -1,36 +1,49 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pokédex Sencilla</title>
-    <!-- Vinculamos el archivo CSS -->
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokédex Sencilla</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <h1>Pokédex Sencilla</h1>
-    </header>
+  <header>
+    <h1>Pokédex Web</h1>
+  </header>
 
-    <main>
-        <!-- Sección para buscar Pokémon -->
-        <section id="buscador">
-            <label for="nombrePokemon">Nombre o número de Pokémon:</label>
-            <input type="text" id="nombrePokemon" placeholder="Ejemplo: pikachu">
-            <button id="btnBuscar">Buscar</button>
-        </section>
+  <!-- Buscador -->
+  <section id="buscador">
+    <input type="text" id="input-buscar" placeholder="Buscar Pokémon por nombre o ID">
+    <button id="btn-buscar">Buscar</button>
+  </section>
 
-        <!-- Sección para mostrar los datos del Pokémon -->
-        <section id="resultado">
-            <!-- Aquí aparecerán los datos traídos de la API -->
-        </section>
-    </main>
+  <main>
+    <!-- Lado izquierdo -->
+    <aside id="sidebar">
+      <h3>Últimas búsquedas</h3>
+      <ul id="ultimas-busquedas"></ul>
 
-    <footer>
-        <p>Proyecto de práctica - Consumiendo PokéAPI</p>
-    </footer>
+      <h3>Favoritos</h3>
+      <ul id="favoritos"></ul>
+    </aside>
 
-    <!-- Vinculamos el archivo JS -->
-    <script src="app.js"></script>
+    <!-- Sección principal -->
+    <section id="contenido">
+      <div id="mensaje-estado"></div>
+
+      <div id="ficha-pokemon"></div>
+
+      <h2>Listado de Pokémon</h2>
+      <div id="paginacion-arriba" class="paginacion"></div>
+      <div id="lista-pokemon" class="grid"></div>
+      <div id="paginacion-abajo" class="paginacion"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Pokédex Web - Proyecto Estudiantil</p>
+  </footer>
+
+  <script src="app.js"></script>
 </body>
 </html>
