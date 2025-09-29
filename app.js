@@ -97,7 +97,6 @@ function renderPokemonList(list) {
     const card = document.createElement("div");
     card.className = "card";
 
-    // crear imagen oficial usando ID extraído de la URL
     const urlParts = p.url.split("/").filter(Boolean);
     const id = urlParts[urlParts.length - 1];
     const imgSrc = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
@@ -183,6 +182,23 @@ function renderFavorites() {
     li.textContent = name.toUpperCase();
     li.onclick = () => fetchPokemon(name);
     favoritesEl.appendChild(li);
+  });
+}
+
+// ---------------------- FILTRO CLIENT-SIDE ----------------------
+searchInput.addEventListener("input", handleFilterList);
+
+function handleFilterList() {
+  const filter = searchInput.value.trim().toLowerCase();
+  const cards = pokemonListEl.querySelectorAll(".card");
+
+  cards.forEach((card) => {
+    const name = card.querySelector("p").textContent.toLowerCase();
+    if (name.includes(filter)) {
+      card.style.display = "block";
+    } else {
+      card.style.display = "none";
+    }
   });
 }
 
