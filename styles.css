@@ -1,0 +1,111 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f5f5f5;
+}
+
+header {
+  background: #ef5350;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+}
+
+h1 {
+  margin: 0 0 0.5rem 0;
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.search-container input {
+  padding: 0.5rem;
+  width: 250px;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  background: #42a5f5;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button:hover {
+  background: #1e88e5;
+}
+
+main {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+#pokedex {
+  flex: 2 1 300px;
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+aside {
+  flex: 1 1 200px;
+}
+
+.side-box {
+  background: white;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+}
+
+.card img {
+  max-width: 150px;
+  display: block;
+  margin: 0 auto;
+}
+
+.hidden {
+  display: none;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.grid .card {
+  background: white;
+  padding: 0.5rem;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  padding-bottom: 1rem;
+}
+
+.pagination button {
+  background: #66bb6a;
+}
+
+.pagination button:hover {
+  background: #43a047;
+}
+
+@media (max-width: 600px) {
+  main {
+    flex-direction: column;
+  }
+}

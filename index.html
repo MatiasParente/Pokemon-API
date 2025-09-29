@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pokémon API - Matías Parente</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Pokémon API - Matías Parente</h1>
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="Buscar Pokémon por nombre..." />
+      <button id="searchBtn">Buscar</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="pokedex">
+      <h2>Ficha del Pokémon</h2>
+      <div id="pokemonCard" class="card">Busca un Pokémon...</div>
+      <button id="addToFav" class="hidden">Agregar a Favoritos</button>
+    </section>
+
+    <aside>
+      <div class="side-box">
+        <h3>Últimas búsquedas</h3>
+        <ul id="recentSearches"></ul>
+      </div>
+      <div class="side-box">
+        <h3>Favoritos</h3>
+        <ul id="favorites"></ul>
+      </div>
+    </aside>
+  </main>
+
+  <section id="listSection">
+    <h2>Listado de Pokémon</h2>
+    <div id="pokemonList" class="grid"></div>
+    <div id="pagination" class="pagination"></div>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>
