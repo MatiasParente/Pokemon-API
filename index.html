@@ -39,6 +39,48 @@
     <div id="pokemonList" class="grid"></div>
     <div id="pagination" class="pagination"></div>
   </section>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokédex Sencilla</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Pokédex Web</h1>
+  </header>
+
+  <!-- Buscador -->
+  <section id="buscador">
+    <input type="text" id="input-buscar" placeholder="Buscar Pokémon por nombre o ID">
+    <button id="btn-buscar">Buscar</button>
+  </section>
+
+  <main>
+    <!-- Lado izquierdo -->
+    <aside id="sidebar">
+      <h3>Últimas búsquedas</h3>
+      <ul id="ultimas-busquedas"></ul>
+
+      <h3>Favoritos</h3>
+      <ul id="favoritos"></ul>
+    </aside>
+
+    <!-- Sección principal -->
+    <section id="contenido">
+      <div id="mensaje-estado"></div>
+
+      <div id="ficha-pokemon"></div>
+
+      <h2>Listado de Pokémon</h2>
+      <div id="paginacion-arriba" class="paginacion"></div>
+      <div id="lista-pokemon" class="grid"></div>
+      <div id="paginacion-abajo" class="paginacion"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Pokédex Web - Proyecto Estudiantil</p>
+  </footer>
 
   <script src="app.js"></script>
 </body>

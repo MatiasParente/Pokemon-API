@@ -1,3 +1,4 @@
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -72,6 +73,69 @@ aside {
 
 .hidden {
   display: none;
+=======
+/* Estilos generales */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+}
+
+header {
+  background: #e63946;
+  color: #fff;
+  padding: 15px;
+  text-align: center;
+}
+
+main {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 10px;
+}
+
+#sidebar {
+  flex: 1 1 200px;
+  padding: 10px;
+  background: #fff;
+  margin: 10px;
+  border-radius: 5px;
+}
+
+#contenido {
+  flex: 3 1 500px;
+  padding: 10px;
+}
+
+#buscador {
+  text-align: center;
+  margin: 15px 0;
+}
+
+#buscador input {
+  padding: 5px;
+  width: 200px;
+}
+
+#buscador button {
+  padding: 6px 12px;
+  background: #e63946;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+#ficha-pokemon {
+  background: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+#ficha-pokemon img {
+  width: 150px;
+  height: 150px;
 }
 
 .grid {
@@ -102,6 +166,47 @@ aside {
 
 .pagination button:hover {
   background: #43a047;
+=======
+  gap: 10px;
+}
+
+.card {
+  background: #fff;
+  padding: 10px;
+  text-align: center;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 1px solid #ddd;
+}
+
+.paginacion {
+  text-align: center;
+  margin: 10px 0;
+}
+
+.paginacion button {
+  margin: 2px;
+  padding: 5px 10px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  cursor: pointer;
+  margin: 5px 0;
+  color: #1d3557;
+  text-decoration: underline;
+}
+
+footer {
+  background: #e63946;
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+  margin-top: 10px;
 }
 
 @media (max-width: 600px) {
