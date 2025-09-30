@@ -1,200 +1,197 @@
 
-const searchInput = document.getElementById("searchInput");
-const searchBtn = document.getElementById("searchBtn");
-const pokemonCard = document.getElementById("pokemonCard");
-const addToFav = document.getElementById("addToFav");
-const recentSearchesEl = document.getElementById("recentSearches");
-const favoritesEl = document.getElementById("favorites");
-const pokemonListEl = document.getElementById("pokemonList");
-const paginationEl = document.getElementById("pagination");
+// Elementos del DOM
+const entradaBusqueda = document.getElementById("entradaBusqueda");
+const botonBuscar = document.getElementById("botonBuscar");
+const tarjetaPokemon = document.getElementById("tarjetaPokemon");
+const botonFavorito = document.getElementById("botonFavorito");
+const listaRecientesEl = document.getElementById("listaRecientes");
+const listaFavoritosEl = document.getElementById("listaFavoritos");
+const listaPokemonesEl = document.getElementById("listaPokemones");
+const paginacionEl = document.getElementById("paginacion");
 
-let recentSearches = JSON.parse(localStorage.getItem("recentSearches")) || [];
-let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-let cache = JSON.parse(localStorage.getItem("cache")) || {};
+// Datos locales
+let busquedasRecientes = JSON.parse(localStorage.getItem("busquedasRecientes")) || [];
+let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
+let cachePokemones = JSON.parse(localStorage.getItem("cachePokemones")) || {};
 
-const POKEMONS_PER_PAGE = 24;
-let currentPage = 1;
-let totalPokemons = 0;
+const POKEMONES_POR_PAGINA = 24;
+let paginaActual = 1;
+let totalPokemones = 0;
 
-// ---------------------- FETCH ----------------------
-async function fetchPokemon(name) {
-  const lower = name.toLowerCase();
-  if (cache[lower]) {
-    renderPokemon(cache[lower], true);
-    return cache[lower];
+// ---------------------- OBTENER POKÉMON ----------------------
+async function obtenerPokemon(nombre) {
+  const nombreMinuscula = nombre.toLowerCase();
+  if (cachePokemones[nombreMinuscula]) {
+    mostrarPokemon(cachePokemones[nombreMinuscula], true);
+    return cachePokemones[nombreMinuscula];
   }
   try {
-    pokemonCard.innerHTML = "Buscando...";
-    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${lower}`);
+    tarjetaPokemon.innerHTML = "Buscando...";
+    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${nombreMinuscula}`);
     if (!res.ok) throw new Error("No encontrado");
-    const data = await res.json();
-    cache[lower] = data;
-    localStorage.setItem("cache", JSON.stringify(cache));
-    renderPokemon(data);
-    return data;
+    const datos = await res.json();
+    cachePokemones[nombreMinuscula] = datos;
+    localStorage.setItem("cachePokemones", JSON.stringify(cachePokemones));
+    mostrarPokemon(datos);
+    return datos;
   } catch (err) {
-    pokemonCard.innerHTML = `<p style="color:red">Error: Pokémon no encontrado</p>`;
-    addToFav.classList.add("hidden");
+    tarjetaPokemon.innerHTML = `<p style="color:red">Error: Pokémon no encontrado</p>`;
+    botonFavorito.classList.add("oculto");
   }
 }
 
-// ---------------------- RENDER FICHA ----------------------
-function renderPokemon(data, fromCache = false) {
-  if (!data) return;
-  const { id, name, height, weight, types, abilities } = data;
-  const img = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
+// ---------------------- MOSTRAR POKÉMON ----------------------
+function mostrarPokemon(datos, desdeCache = false) {
+  if (!datos) return;
+  const { id, name, height, weight, types, abilities } = datos;
+  const imagen = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
 
-  pokemonCard.innerHTML = `
+  tarjetaPokemon.innerHTML = `
     <h3>${name ? name.toUpperCase() : "Desconocido"}</h3>
-    <img src="${img}" alt="Imagen de ${name}" />
+    <img src="${imagen}" alt="Imagen de ${name}" />
     <p><strong>ID:</strong> ${id}</p>
     <p><strong>Altura:</strong> ${height}</p>
     <p><strong>Peso:</strong> ${weight}</p>
     <p><strong>Tipos:</strong> ${types.map(t => t.type.name).join(", ")}</p>
     <p><strong>Habilidades:</strong> ${abilities.map(a => a.ability.name).join(", ")}</p>
-    ${fromCache ? "<small>Desde caché ✅</small>" : ""}
+    ${desdeCache ? "<small>Desde caché ✅</small>" : ""}
   `;
 
-  addToFav.classList.remove("hidden");
-  addToFav.onclick = () => addFavorite(name);
+  botonFavorito.classList.remove("oculto");
+  botonFavorito.onclick = () => agregarFavorito(name);
 }
 
 // ---------------------- BUSCADOR ----------------------
-searchBtn.addEventListener("click", handleSearch);
-searchInput.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") handleSearch();
+botonBuscar.addEventListener("click", manejarBusqueda);
+entradaBusqueda.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") manejarBusqueda();
 });
 
-function handleSearch() {
-  const name = searchInput.value.trim();
-  if (!name) return;
-  fetchPokemon(name).then((data) => {
-    if (data && data.name) updateRecentSearches(data.name);
+function manejarBusqueda() {
+  const nombre = entradaBusqueda.value.trim();
+  if (!nombre) return;
+  obtenerPokemon(nombre).then((datos) => {
+    if (datos && datos.name) actualizarBusquedasRecientes(datos.name);
   });
 }
 
-// ---------------------- LISTADO ----------------------
-async function fetchPokemonList(page = 1) {
-  currentPage = page;
-  const offset = (page - 1) * POKEMONS_PER_PAGE;
-  pokemonListEl.innerHTML = "Cargando lista...";
+// ---------------------- LISTADO DE POKÉMON ----------------------
+async function obtenerListaPokemones(pagina = 1) {
+  paginaActual = pagina;
+  const offset = (pagina - 1) * POKEMONES_POR_PAGINA;
+  listaPokemonesEl.innerHTML = "Cargando lista...";
 
   const res = await fetch(
-    `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${POKEMONS_PER_PAGE}`
+    `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${POKEMONES_POR_PAGINA}`
   );
-  const data = await res.json();
-  totalPokemons = data.count;
+  const datos = await res.json();
+  totalPokemones = datos.count;
 
-  renderPokemonList(data.results);
-  renderPagination();
+  mostrarListaPokemones(datos.results);
+  mostrarPaginacion();
 }
 
-function renderPokemonList(list) {
-  pokemonListEl.innerHTML = "";
-  list.forEach((p) => {
-    const card = document.createElement("div");
-    card.className = "card";
-    const urlParts = p.url.split("/").filter(Boolean);
-    const id = urlParts[urlParts.length - 1];
-    const imgSrc = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
+function mostrarListaPokemones(lista) {
+  listaPokemonesEl.innerHTML = "";
+  lista.forEach((p) => {
+    const tarjeta = document.createElement("div");
+    tarjeta.className = "card";
+    const partesUrl = p.url.split("/").filter(Boolean);
+    const id = partesUrl[partesUrl.length - 1];
+    const imagenSrc = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
 
-    card.innerHTML = `
-      <img src="${imgSrc}" alt="${p.name}" />
+    tarjeta.innerHTML = `
+      <img src="${imagenSrc}" alt="${p.name}" />
       <p>${p.name.toUpperCase()}</p>
     `;
-    card.onclick = () => fetchPokemon(p.name).then(() => updateRecentSearches(p.name));
-    pokemonListEl.appendChild(card);
+    tarjeta.onclick = () => obtenerPokemon(p.name).then(() => actualizarBusquedasRecientes(p.name));
+    listaPokemonesEl.appendChild(tarjeta);
   });
 }
 
 // ---------------------- PAGINACIÓN ----------------------
-function renderPagination() {
-  const totalPages = Math.ceil(totalPokemons / POKEMONS_PER_PAGE);
-  paginationEl.innerHTML = "";
+function mostrarPaginacion() {
+  const totalPaginas = Math.ceil(totalPokemones / POKEMONES_POR_PAGINA);
+  paginacionEl.innerHTML = "";
 
-  const createBtn = (text, page) => {
-    const btn = document.createElement("button");
-    btn.textContent = text;
-    btn.onclick = () => fetchPokemonList(page);
-    return btn;
+  const crearBoton = (texto, pagina) => {
+    const boton = document.createElement("button");
+    boton.textContent = texto;
+    boton.onclick = () => obtenerListaPokemones(pagina);
+    return boton;
   };
 
-  paginationEl.appendChild(createBtn("Primero", 1));
-  paginationEl.appendChild(createBtn("Anterior", Math.max(1, currentPage - 1)));
+  paginacionEl.appendChild(crearBoton("Primero", 1));
+  paginacionEl.appendChild(crearBoton("Anterior", Math.max(1, paginaActual - 1)));
 
-  for (let i = 1; i <= totalPages; i++) {
-    if (i <= 3 || i > totalPages - 3 || Math.abs(i - currentPage) <= 1) {
-      const btn = createBtn(i, i);
-      if (i === currentPage) btn.style.fontWeight = "bold";
-      paginationEl.appendChild(btn);
+  for (let i = 1; i <= totalPaginas; i++) {
+    if (i <= 3 || i > totalPaginas - 3 || Math.abs(i - paginaActual) <= 1) {
+      const boton = crearBoton(i, i);
+      if (i === paginaActual) boton.style.fontWeight = "bold";
+      paginacionEl.appendChild(boton);
     }
   }
 
-  paginationEl.appendChild(createBtn("Siguiente", Math.min(totalPages, currentPage + 1)));
-  paginationEl.appendChild(createBtn("Último", totalPages));
+  paginacionEl.appendChild(crearBoton("Siguiente", Math.min(totalPaginas, paginaActual + 1)));
+  paginacionEl.appendChild(crearBoton("Último", totalPaginas));
 }
 
 // ---------------------- ÚLTIMAS BÚSQUEDAS ----------------------
-function updateRecentSearches(name) {
-  if (!recentSearches.includes(name)) {
-    recentSearches.unshift(name);
+function actualizarBusquedasRecientes(nombre) {
+  if (!busquedasRecientes.includes(nombre)) {
+    busquedasRecientes.unshift(nombre);
   } else {
-    recentSearches = [name, ...recentSearches.filter(n => n !== name)];
+    busquedasRecientes = [nombre, ...busquedasRecientes.filter(n => n !== nombre)];
   }
-  recentSearches = recentSearches.slice(0, 10);
-  localStorage.setItem("recentSearches", JSON.stringify(recentSearches));
-  renderRecentSearches();
+  busquedasRecientes = busquedasRecientes.slice(0, 10);
+  localStorage.setItem("busquedasRecientes", JSON.stringify(busquedasRecientes));
+  mostrarBusquedasRecientes();
 }
 
-function renderRecentSearches() {
-  recentSearchesEl.innerHTML = "";
-  recentSearches.forEach((name) => {
+function mostrarBusquedasRecientes() {
+  listaRecientesEl.innerHTML = "";
+  busquedasRecientes.forEach((nombre) => {
     const li = document.createElement("li");
-    li.textContent = name.toUpperCase();
-    li.onclick = () => fetchPokemon(name);
-    recentSearchesEl.appendChild(li);
+    li.textContent = nombre.toUpperCase();
+    li.onclick = () => obtenerPokemon(nombre);
+    listaRecientesEl.appendChild(li);
   });
 }
 
 // ---------------------- FAVORITOS ----------------------
-function addFavorite(name) {
-  if (!favorites.includes(name)) {
-    favorites.unshift(name);
-    favorites = favorites.slice(0, 50);
-    localStorage.setItem("favorites", JSON.stringify(favorites));
-    renderFavorites();
+function agregarFavorito(nombre) {
+  if (!favoritos.includes(nombre)) {
+    favoritos.unshift(nombre);
+    favoritos = favoritos.slice(0, 50);
+    localStorage.setItem("favoritos", JSON.stringify(favoritos));
+    mostrarFavoritos();
   }
 }
 
-function renderFavorites() {
-  favoritesEl.innerHTML = "";
-  favorites.forEach((name) => {
+function mostrarFavoritos() {
+  listaFavoritosEl.innerHTML = "";
+  favoritos.forEach((nombre) => {
     const li = document.createElement("li");
-    li.textContent = name.toUpperCase();
-    li.onclick = () => fetchPokemon(name);
-    favoritesEl.appendChild(li);
+    li.textContent = nombre.toUpperCase();
+    li.onclick = () => obtenerPokemon(nombre);
+    listaFavoritosEl.appendChild(li);
   });
 }
 
 // ---------------------- FILTRO CLIENT-SIDE ----------------------
-searchInput.addEventListener("input", handleFilterList);
+entradaBusqueda.addEventListener("input", manejarFiltroLista);
 
-function handleFilterList() {
-  const filter = searchInput.value.trim().toLowerCase();
-  const cards = pokemonListEl.querySelectorAll(".card");
+function manejarFiltroLista() {
+  const filtro = entradaBusqueda.value.trim().toLowerCase();
+  const tarjetas = listaPokemonesEl.querySelectorAll(".card");
 
-  cards.forEach((card) => {
-    const name = card.querySelector("p").textContent.toLowerCase();
-    if (name.includes(filter)) {
-      card.style.display = "block";
-    } else {
-      card.style.display = "none";
-    }
+  tarjetas.forEach((tarjeta) => {
+    const nombre = tarjeta.querySelector("p").textContent.toLowerCase();
+    tarjeta.style.display = nombre.includes(filtro) ? "block" : "none";
   });
 }
 
 // ---------------------- INICIO ----------------------
-renderRecentSearches();
-renderFavorites();
-fetchPokemonList();
-
+mostrarBusquedasRecientes();
+mostrarFavoritos();
+obtenerListaPokemones();

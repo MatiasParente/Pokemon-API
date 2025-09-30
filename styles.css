@@ -16,13 +16,13 @@ h1 {
   margin: 0 0 0.5rem 0;
 }
 
-.search-container {
+.contenedor-busqueda {
   display: flex;
   justify-content: center;
   gap: 0.5rem;
 }
 
-.search-container input {
+.contenedor-busqueda input {
   padding: 0.5rem;
   width: 250px;
 }
@@ -58,7 +58,7 @@ aside {
   flex: 1 1 200px;
 }
 
-.side-box {
+.caja-lateral {
   background: white;
   padding: 0.5rem 1rem;
   margin-bottom: 1rem;
@@ -71,7 +71,7 @@ aside {
   margin: 0 auto;
 }
 
-.hidden {
+.oculto {
   display: none;
 }
 

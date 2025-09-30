@@ -3,42 +3,42 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pokémon API - Matías Parente</title>
+  <title>API de Pokémon - Matías Parente</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header>
-    <h1>Pokémon API - Matías Parente</h1>
-    <div class="search-container">
-      <input type="text" id="searchInput" placeholder="Buscar Pokémon" />
-      <button id="searchBtn">Buscar</button>
+    <h1>API de Pokémon - Matías Parente</h1>
+    <div class="contenedor-busqueda">
+      <input type="text" id="entradaBusqueda" placeholder="Buscar Pokémon" />
+      <button id="botonBuscar">Buscar</button>
     </div>
   </header>
 
   <main>
     <section id="pokedex">
       <h2>Ficha del Pokémon</h2>
-      <div id="pokemonCard" class="card">Busca un Pokémon...</div>
-      <button id="addToFav" class="hidden">Agregar a Favoritos</button>
+      <div id="tarjetaPokemon" class="card">Busca un Pokémon...</div>
+      <button id="botonFavorito" class="oculto">Agregar a favoritos</button>
     </section>
 
     <aside>
-      <div class="side-box">
+      <div class="caja-lateral">
         <h3>Últimas búsquedas</h3>
-        <ul id="recentSearches"></ul>
+        <ul id="listaRecientes"></ul>
       </div>
 
-      <div class="side-box">
+      <div class="caja-lateral">
         <h3>Favoritos</h3>
-        <ul id="favorites"></ul>
+        <ul id="listaFavoritos"></ul>
       </div>
     </aside>
   </main>
 
-  <section id="listSection">
+  <section id="seccionListado">
     <h2>Listado de Pokémon</h2>
-    <div id="pokemonList" class="grid"></div>
-    <div id="pagination" class="pagination"></div>
+    <div id="listaPokemones" class="grid"></div>
+    <div id="paginacion" class="pagination"></div>
   </section>
 
   <script src="app.js"></script>
