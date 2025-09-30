@@ -1,5 +1,5 @@
 
-// Elementos del DOM
+//Elementos del DOM
 const entradaBusqueda = document.getElementById("entradaBusqueda");
 const botonBuscar = document.getElementById("botonBuscar");
 const tarjetaPokemon = document.getElementById("tarjetaPokemon");
@@ -9,7 +9,7 @@ const listaFavoritosEl = document.getElementById("listaFavoritos");
 const listaPokemonesEl = document.getElementById("listaPokemones");
 const paginacionEl = document.getElementById("paginacion");
 
-// Datos locales
+//Datos locales
 let busquedasRecientes = JSON.parse(localStorage.getItem("busquedasRecientes")) || [];
 let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
 let cachePokemones = JSON.parse(localStorage.getItem("cachePokemones")) || {};
@@ -18,7 +18,7 @@ const POKEMONES_POR_PAGINA = 24;
 let paginaActual = 1;
 let totalPokemones = 0;
 
-// ---------------------- OBTENER POKÉMON ----------------------
+//---------------------- OBTENER POKÉMON ----------------------
 async function obtenerPokemon(nombre) {
   const nombreMinuscula = nombre.toLowerCase();
   if (cachePokemones[nombreMinuscula]) {
@@ -40,7 +40,7 @@ async function obtenerPokemon(nombre) {
   }
 }
 
-// ---------------------- MOSTRAR POKÉMON ----------------------
+//---------------------- MOSTRAR POKÉMON ----------------------
 function mostrarPokemon(datos, desdeCache = false) {
   if (!datos) return;
   const { id, name, height, weight, types, abilities } = datos;
@@ -61,7 +61,7 @@ function mostrarPokemon(datos, desdeCache = false) {
   botonFavorito.onclick = () => agregarFavorito(name);
 }
 
-// ---------------------- BUSCADOR ----------------------
+//---------------------- BUSCADOR ----------------------
 botonBuscar.addEventListener("click", manejarBusqueda);
 entradaBusqueda.addEventListener("keypress", (e) => {
   if (e.key === "Enter") manejarBusqueda();
@@ -75,7 +75,7 @@ function manejarBusqueda() {
   });
 }
 
-// ---------------------- LISTADO DE POKÉMON ----------------------
+//---------------------- LISTADO DE POKÉMON ----------------------
 async function obtenerListaPokemones(pagina = 1) {
   paginaActual = pagina;
   const offset = (pagina - 1) * POKEMONES_POR_PAGINA;
@@ -109,7 +109,7 @@ function mostrarListaPokemones(lista) {
   });
 }
 
-// ---------------------- PAGINACIÓN ----------------------
+//---------------------- PAGINACIÓN ----------------------
 function mostrarPaginacion() {
   const totalPaginas = Math.ceil(totalPokemones / POKEMONES_POR_PAGINA);
   paginacionEl.innerHTML = "";
@@ -136,7 +136,7 @@ function mostrarPaginacion() {
   paginacionEl.appendChild(crearBoton("Último", totalPaginas));
 }
 
-// ---------------------- ÚLTIMAS BÚSQUEDAS ----------------------
+//---------------------- ÚLTIMAS BÚSQUEDAS ----------------------
 function actualizarBusquedasRecientes(nombre) {
   if (!busquedasRecientes.includes(nombre)) {
     busquedasRecientes.unshift(nombre);
@@ -158,7 +158,7 @@ function mostrarBusquedasRecientes() {
   });
 }
 
-// ---------------------- FAVORITOS ----------------------
+//---------------------- FAVORITOS ----------------------
 function agregarFavorito(nombre) {
   if (!favoritos.includes(nombre)) {
     favoritos.unshift(nombre);
@@ -178,7 +178,7 @@ function mostrarFavoritos() {
   });
 }
 
-// ---------------------- FILTRO CLIENT-SIDE ----------------------
+//---------------------- FILTRO CLIENT-SIDE ----------------------
 entradaBusqueda.addEventListener("input", manejarFiltroLista);
 
 function manejarFiltroLista() {
@@ -191,7 +191,7 @@ function manejarFiltroLista() {
   });
 }
 
-// ---------------------- INICIO ----------------------
+//---------------------- INICIO ----------------------
 mostrarBusquedasRecientes();
 mostrarFavoritos();
 obtenerListaPokemones();
