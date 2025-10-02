@@ -50,8 +50,8 @@ function mostrarPokemon(datos, desdeCache = false) {
     <h3>${name ? name.toUpperCase() : "Desconocido"}</h3>
     <img src="${imagen}" alt="Imagen de ${name}" />
     <p><strong>ID:</strong> ${id}</p>
-    <p><strong>Altura:</strong> ${height}</p>
-    <p><strong>Peso:</strong> ${weight}</p>
+    <p><strong>Altura:</strong> ${height/10} m</p>
+    <p><strong>Peso:</strong> ${weight/10} kg</p>
     <p><strong>Tipos:</strong> ${types.map(t => t.type.name).join(", ")}</p>
     <p><strong>Habilidades:</strong> ${abilities.map(a => a.ability.name).join(", ")}</p>
     ${desdeCache ? "<small>Desde caché ✅</small>" : ""}
